@@ -3,9 +3,9 @@
 # ----------------------- #
 
 url: http://paulbowler.github.io
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+title: Developers Blog
+subtitle: Clojure, Groovy, Ruby & Javascript.
+author: Paul Bowler
 simple_search: http://google.com/search
 description:
 
