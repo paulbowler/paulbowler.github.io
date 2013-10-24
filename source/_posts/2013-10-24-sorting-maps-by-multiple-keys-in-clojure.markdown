@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Sorting maps by multiple keys in Clojure"
+title: "Sorting maps by multiple keys"
 date: 2013-10-24 11:34
 comments: true
 categories: [clojure, sorting, maps]
@@ -55,12 +55,7 @@ args (left-to-right).
 Adding in juxt to the code gives:
 
 ``` clj Sorting map by multiple keys
-(sort-by (juxt :score :age) [
-             {:name "Fred" :age 10 :score 9}
-             {:name "Jim"  :age 15 :score 8}
-             {:name "Bill" :age 15 :score 9}
-             {:name "Emma" :age 7  :score 7}
-             {:name "Jane" :age 9  :score 8}])
+(sort-by (juxt :score :age) results)
 ```
 ``` clj
 ({:name "Emma", :age 7,  :score 7}
