@@ -96,7 +96,7 @@
 
   <div class="entry-content"><p>Several hundred school students have taken an exam and the Headmistress wants a list of results ordered by score. Pretty simple ask.</p>
 
-<p>Here is a representative sample of the students, their ages and score as a sequence of maps:</p>
+<p>Here is a representative sample of the students, their age and score as a sequence of maps:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -154,9 +154,9 @@
 <p>The headmistress is happy, although now she also wants the results weighted by age so that of students with
 equal marks the younger will come above the older.</p>
 
-<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Shame. Instead, what we need is a new function that can take many search functions and apply them each in turn.</p>
+<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is a function that can take many functions and returns a new function than can apply each function in turn (get your head around that!)</p>
 
-<p>Fortunately for us, this function already exists, namely &lsquo;juxt&rsquo;. Rewriting the function with juxt we now get:</p>
+<p>Fortunately for us, this function already exists, namely &lsquo;juxt&rsquo;. Rewriting the sort-by with juxt we now get:</p>
 
 <figure class='code'><figcaption><span>Sorting map by multiple keys</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -186,7 +186,9 @@ equal marks the younger will come above the older.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Great! Although we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example. Clearly this time we can&rsquo;t just reverse the resulting sequence as student&rsquo;s ages would then be in the wrong order. Hmmm&hellip;</p>
+<p>Great!</p>
+
+<p>Sadly though we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example. Clearly this time we can&rsquo;t just reverse the resulting sequence as student&rsquo;s ages would then be in the wrong order. Hmmm&hellip;</p>
 
 <p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface through a &lsquo;compareTo&rsquo; method.</p>
 
