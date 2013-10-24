@@ -4,7 +4,7 @@
   <title><![CDATA[Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T18:11:54+01:00</updated>
+  <updated>2013-10-24T19:03:23+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -79,9 +79,9 @@ sequences of maps. Breaking down what we need gives the following:</p>
 3 Merge the maps into a new maps
 </code></pre>
 
-<p>To find the unique keys we can map the &lsquo;keys&rsquo; function across all database, then remove duplicates:</p>
+<p>To find the unique key-values we can map the :key across all databases, then remove duplicates:</p>
 
-<figure class='code'><figcaption><span>Unique keys across databases</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Unique key-values across databases</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">unique-key-values</span> <span class="p">[</span><span class="nb">key </span><span class="nv">colls</span><span class="p">]</span> <span class="p">(</span><span class="nb">distinct </span><span class="p">(</span><span class="nf">flatten</span> <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">map key </span><span class="nv">%</span><span class="p">)</span> <span class="nv">colls</span><span class="p">))))</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -97,6 +97,51 @@ sequences of maps. Breaking down what we need gives the following:</p>
 
 <figure class='code'><figcaption><span>Unique key values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="s">&quot;Tom Thumb&quot;</span> <span class="s">&quot;Bob Smith&quot;</span> <span class="s">&quot;Jim Brown&quot;</span> <span class="s">&quot;Kate Jones&quot;</span> <span class="s">&quot;Helen Pain&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For each :name value we now need to merge all the maps from each database that contain this key/value combination:</p>
+
+<figure class='code'><figcaption><span>Merge maps where it contains :name of, say, &#8220;Tom Thumb&#8221;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">merge-key-val</span> <span class="p">[</span><span class="nb">key val </span><span class="nv">colls</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">apply merge </span><span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">key </span><span class="nv">%</span><span class="p">)</span> <span class="nv">val</span><span class="p">)(</span><span class="nb">apply concat </span><span class="nv">colls</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For :name as the key and &lsquo;Tom Thumb&rsquo; as the value, this gives us results:</p>
+
+<figure class='code'><figcaption><span>Merge maps where it contains :name of, say, &#8220;Tom Thumb&#8221;</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">{</span><span class="ss">:meal</span> <span class="ss">:vegetarian</span>, <span class="ss">:house</span> <span class="ss">:byron</span>, <span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>, <span class="ss">:class</span> <span class="ss">:twyford</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Excellent! Now we need to bring it all together apping the &lsquo;merge-key-val&rsquo; function over all :name values:</p>
+
+<figure class='code'><figcaption><span>Final code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">key-join</span> <span class="p">[</span><span class="nb">key </span><span class="o">&amp;</span> <span class="nv">colls</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">merge-key-val</span> <span class="nb">key </span><span class="nv">%</span> <span class="nv">colls</span><span class="p">)</span> <span class="p">(</span><span class="nb">map key </span><span class="p">(</span><span class="nb">first </span><span class="nv">colls</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can now get the final merged database:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nf">key-join</span> <span class="ss">:name</span> <span class="nv">class-data</span> <span class="nv">house-data</span> <span class="nv">meal-data</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:meal</span> <span class="ss">:vegetarian</span>, <span class="ss">:house</span> <span class="ss">:byron</span>, <span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>, <span class="ss">:class</span> <span class="ss">:twyford</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:meal</span> <span class="ss">:lunchbox</span>, <span class="ss">:house</span> <span class="ss">:shelley</span>, <span class="ss">:name</span> <span class="s">&quot;Bob Smith&quot;</span>, <span class="ss">:class</span> <span class="ss">:marwell</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:meal</span> <span class="ss">:hot</span>, <span class="ss">:house</span> <span class="ss">:auden</span>, <span class="ss">:name</span> <span class="s">&quot;Jim Brown&quot;</span>, <span class="ss">:class</span> <span class="ss">:owslebury</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:meal</span> <span class="ss">:lunchbox</span>, <span class="ss">:house</span> <span class="ss">:byron</span>, <span class="ss">:name</span> <span class="s">&quot;Kate Jones&quot;</span>, <span class="ss">:class</span> <span class="ss">:littleton</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:meal</span> <span class="ss">:hot</span>, <span class="ss">:house</span> <span class="ss">:blake</span>, <span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:class</span> <span class="ss">:alresford</span><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>

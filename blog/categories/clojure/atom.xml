@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T18:11:54+01:00</updated>
+  <updated>2013-10-24T19:03:23+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -68,9 +68,9 @@ sequences of maps. Breaking down what we need gives the following:</p>
 3 Merge the maps into a new maps
 </code></pre>
 
-<p>To find the unique keys we can map the &lsquo;keys&rsquo; function across all database, then remove duplicates:</p>
+<p>To find the unique key-values we can map the :key across all databases, then remove duplicates:</p>
 
-<p><code>clj Unique keys across databases
+<p><code>clj Unique key-values across databases
 (defn unique-key-values [key colls] (distinct (flatten (map #(map key %) colls))))
 </code></p>
 
@@ -81,6 +81,31 @@ sequences of maps. Breaking down what we need gives the following:</p>
 gives us:
 <code>clj Unique key values
 ("Tom Thumb" "Bob Smith" "Jim Brown" "Kate Jones" "Helen Pain")
+</code>
+For each :name value we now need to merge all the maps from each database that contain this key/value combination:
+<code>clj Merge maps where it contains :name of, say, "Tom Thumb"
+(defn merge-key-val [key val colls]
+  (apply merge (filter #(= (key %) val)(apply concat colls))))
+</code>
+For :name as the key and &lsquo;Tom Thumb&rsquo; as the value, this gives us results:
+<code>
+{:meal :vegetarian, :house :byron, :name "Tom Thumb", :class :twyford}
+</code>
+Excellent! Now we need to bring it all together apping the &lsquo;merge-key-val&rsquo; function over all :name values:
+<code>clj Final code
+(defn key-join [key &amp; colls]
+  (map #(merge-key-val key % colls) (map key (first colls))))
+</code>
+We can now get the final merged database:
+<code>clj
+(key-join :name class-data house-data meal-data)
+</code>
+<code>clj
+({:meal :vegetarian, :house :byron, :name "Tom Thumb", :class :twyford}
+ {:meal :lunchbox, :house :shelley, :name "Bob Smith", :class :marwell}
+ {:meal :hot, :house :auden, :name "Jim Brown", :class :owslebury}
+ {:meal :lunchbox, :house :byron, :name "Kate Jones", :class :littleton}
+ {:meal :hot, :house :blake, :name "Helen Pain", :class :alresford})
 </code></p>
 ]]></content>
   </entry>
