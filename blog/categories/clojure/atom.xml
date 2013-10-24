@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | Developers Blog]]></title>
   <link href="http://paulbowler.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T13:44:39+01:00</updated>
+  <updated>2013-10-24T13:45:12+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -18,7 +18,7 @@
     <link href="http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure/"/>
     <updated>2013-10-24T11:34:00+01:00</updated>
     <id>http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure</id>
-    <content type="html"><![CDATA[<p>Several school students have taken an exam and the Headmistress  wants a list ordered by score. Pretty simple ask.</p>
+    <content type="html"><![CDATA[<p>Several hundred school students have taken an exam and the Headmistress  wants a list ordered by score. Pretty simple ask.</p>
 
 <p>Here is a representative sample of the students, their ages and score as a sequence of maps:
 ``` clj
