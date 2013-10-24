@@ -4,7 +4,7 @@
   <title><![CDATA[Category: sorting | Paul Bowler]]></title>
   <link href="http://paulbowler.github.io/blog/categories/sorting/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T14:08:51+01:00</updated>
+  <updated>2013-10-24T14:13:16+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -59,7 +59,7 @@ This is fine, although the scores are in lowest-first order. We can fix that by 
 The headmistress is happy, although now she also wants the results weighted by age so that of students with
 equal marks the younger will come above the older.</p>
 
-<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by score, age&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is to be able to apply each sort in turn and fortunately &lsquo;juxt&rsquo; does exactly what we need:</p>
+<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by score, age&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is to be able to apply each sort in turn. Looking through the docs it appears that <a href="http://clojuredocs.org/clojure_core/clojure.core/juxt">juxt</a> does exactly what we need:</p>
 
 <p>``` clj Sorting map by multiple keys
 (sort-by (juxt :score :age) [</p>
@@ -79,7 +79,7 @@ equal marks the younger will come above the older.</p>
  {:name &ldquo;Fred&rdquo;, :age 10, :score 9}
  {:name &ldquo;Bill&rdquo;, :age 15, :score 9})
 ```
-Sadly though we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example. To use the SQL example again, we need &lsquo;order by score <em>desc</em>, age&rsquo;. Clearly this time we can&rsquo;t just reverse the resulting sequence as student&rsquo;s ages would then be in the wrong order. Hmmm&hellip;</p>
+Unfortunately we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example. To use the SQL example again, we need &lsquo;order by score <em>desc</em>, age&rsquo;. Clearly this time we can&rsquo;t just reverse the resulting sequence as student&rsquo;s ages would then be in the wrong order. Hmmm&hellip;</p>
 
 <p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface through a &lsquo;compareTo&rsquo; method.</p>
 
