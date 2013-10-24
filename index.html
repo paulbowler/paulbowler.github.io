@@ -149,6 +149,11 @@ equal marks the younger will come above the older.</p>
 
 <p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by score, age&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is to be able to apply each sort in turn. Looking through the docs it appears that <a href="http://clojuredocs.org/clojure_core/clojure.core/juxt">juxt</a> does exactly what we need:</p>
 
+<blockquote><p>Takes a set of functions and returns a fn that is the juxtaposition<br/>of those fns. The returned fn takes a variable number of args, and<br/>returns a vector containing the result of applying each fn to the<br/>args (left-to-right).<br/>    ((juxt a b c) x) => [(a x) (b x) (c x)]</p></blockquote>
+
+
+<p>Addint juxt to the code gives:</p>
+
 <figure class='code'><figcaption><span>Sorting map by multiple keys</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
