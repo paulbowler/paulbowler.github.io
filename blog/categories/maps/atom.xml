@@ -4,7 +4,7 @@
   <title><![CDATA[Category: maps | Developers Blog]]></title>
   <link href="http://paulbowler.github.io/blog/categories/maps/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T12:36:39+01:00</updated>
+  <updated>2013-10-24T12:38:41+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -20,7 +20,7 @@
     <id>http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure</id>
     <content type="html"><![CDATA[<p>As keywords are also Clojure functions, it is very simple to sort maps by a specific key:</p>
 
-<p>``` clj &ldquo;Sorting map by single key&rdquo;
+<p>``` clj Sorting map by single key
 (sort-by :score [</p>
 
 <pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
@@ -41,15 +41,15 @@ Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
 
 <p>Rewriting the function with juxt we now get:</p>
 
-<p>``` clj &ldquo;Sorting map by multiple keys&rdquo;</p>
+<p>``` clj Sorting map by multiple keys
+(sort-by (juxt :score :age) [</p>
 
 <pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
          {:name "Jim"  :age 15 :score 7 :tuition true}
          {:name "Jane" :age 9 :score 8  :tuition false}])
 </code></pre>
 
-<p>(sort-by (juxt :score :age) [
-<code>
+<p><code>
 </code> clj
 ({:name &ldquo;Jim&rdquo;, :age 15, :score 7, :tuition true} {:name &ldquo;Jane&rdquo;, :age 9, :score 8, :tuition false} {:name &ldquo;Fred&rdquo;, :age 10, :score 9, :tuition true})
 ```</p>
@@ -57,7 +57,7 @@ Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
 <p>Great! But now what if we want to also rank by those students who take extra tuition? You&rsquo;d expect the
 following to work, but it orders the boolean false-true rather than true-false:</p>
 
-<p>``` clj &ldquo;Sorting map by multiple keys and boolean&rdquo;
+<p>``` clj Sorting map by multiple keys and boolean
 (sort-by (juxt :tuition :score :age) [</p>
 
 <pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
