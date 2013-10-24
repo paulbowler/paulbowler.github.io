@@ -190,7 +190,7 @@ sequences of maps. Breaking down what we need gives the following:</p>
 <figure class='code'><figcaption><span>Final code</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">key-join</span> <span class="p">[</span><span class="nb">key </span><span class="o">&amp;</span> <span class="nv">colls</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">merge-key-val</span> <span class="nb">key </span><span class="nv">%</span> <span class="nv">colls</span><span class="p">)</span> <span class="p">(</span><span class="nb">map key </span><span class="p">(</span><span class="nb">first </span><span class="nv">colls</span><span class="p">))))</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">merge-key-val</span> <span class="nb">key </span><span class="nv">%</span> <span class="nv">colls</span><span class="p">)</span> <span class="p">(</span><span class="nf">unique-keys</span> <span class="nb">key </span><span class="nv">colls</span><span class="p">)))</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -213,6 +213,8 @@ sequences of maps. Breaking down what we need gives the following:</p>
 </span><span class='line'> <span class="p">{</span><span class="ss">:meal</span> <span class="ss">:hot</span>, <span class="ss">:house</span> <span class="ss">:blake</span>, <span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:class</span> <span class="ss">:alresford</span><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>Using functional decomposition we have created a simple solution to the problem that is generic enough to be used again.</p>
 </div>
   
   

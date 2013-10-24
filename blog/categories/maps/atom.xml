@@ -4,7 +4,7 @@
   <title><![CDATA[Category: maps | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/maps/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T19:03:23+01:00</updated>
+  <updated>2013-10-24T19:06:55+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -94,7 +94,7 @@ For :name as the key and &lsquo;Tom Thumb&rsquo; as the value, this gives us res
 Excellent! Now we need to bring it all together apping the &lsquo;merge-key-val&rsquo; function over all :name values:
 <code>clj Final code
 (defn key-join [key &amp; colls]
-  (map #(merge-key-val key % colls) (map key (first colls))))
+  (map #(merge-key-val key % colls) (unique-keys key colls)))
 </code>
 We can now get the final merged database:
 <code>clj
@@ -106,7 +106,8 @@ We can now get the final merged database:
  {:meal :hot, :house :auden, :name "Jim Brown", :class :owslebury}
  {:meal :lunchbox, :house :byron, :name "Kate Jones", :class :littleton}
  {:meal :hot, :house :blake, :name "Helen Pain", :class :alresford})
-</code></p>
+</code>
+Using functional decomposition we have created a simple solution to the problem that is generic enough to be used again.</p>
 ]]></content>
   </entry>
   
