@@ -4,7 +4,7 @@
   <title><![CDATA[Developers Blog]]></title>
   <link href="http://paulbowler.github.io/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T12:33:18+01:00</updated>
+  <updated>2013-10-24T12:36:39+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -31,6 +31,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">7</span><span class="p">}</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span>, <span class="ss">:age</span> <span class="mi">9</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <p>However, what if we want to sort a map by multiple keys, such as :age and then :score? We can&rsquo;t just
 add the second keyword to sort-by.</p>
 
@@ -47,6 +52,11 @@ Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
 </span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>  <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">7</span> <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
 </span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:age</span> <span class="mi">9</span> <span class="ss">:score</span> <span class="mi">8</span>  <span class="ss">:tuition</span> <span class="nv">false</span><span class="p">}])</span>
 </span><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="ss">:score</span> <span class="ss">:age</span><span class="p">)</span> <span class="p">[</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">7</span>, <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span>, <span class="ss">:age</span> <span class="mi">9</span>, <span class="ss">:score</span> <span class="mi">8</span>, <span class="ss">:tuition</span> <span class="nv">false</span><span class="p">}</span> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span>, <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
