@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | Developers Blog]]></title>
   <link href="http://paulbowler.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T12:52:50+01:00</updated>
+  <updated>2013-10-24T13:36:31+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -18,58 +18,88 @@
     <link href="http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure/"/>
     <updated>2013-10-24T11:34:00+01:00</updated>
     <id>http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure</id>
-    <content type="html"><![CDATA[<p>As keywords are also Clojure functions, it is very simple to sort maps by a specific key:</p>
+    <content type="html"><![CDATA[<p>Five students have taken an exam and we want to sort their scores in order. Pretty simple ask.</p>
 
-<p>``` clj Sorting map by single key
-(sort-by :score [</p>
+<p>Here are the students, their ages and score:
+``` clj
+(def results [{:name &ldquo;Fred&rdquo; :age 10 :score 9}</p>
 
-<pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
-         {:name "Jim"  :age 15 :score 7 :tuition true}
-         {:name "Jane" :age 9 :score 8  :tuition false}])
+<pre><code>          {:name "Jim"  :age 15 :score 8}
+          {:name "Bill" :age 15 :score 9}
+          {:name "Emma" :age 7  :score 7}
+          {:name "Jane" :age 9  :score 8}])
 </code></pre>
 
-<p><code>
-</code> clj
-({:name &ldquo;Jim&rdquo;, :age 15, :score 7}
- {:name &ldquo;Jane&rdquo;, :age 9, :score 8}
- {:name &ldquo;Fred&rdquo;, :age 10, :score 9})
-```</p>
+<p>```</p>
 
-<p>However, what if we want to sort a map by multiple keys, such as :age and then :score? We can&rsquo;t just
-add the second keyword to sort-by.</p>
+<p>As keywords are also Clojure functions, it is very simple to sort maps by a specific key:</p>
 
-<p>What we need is a new function that can take many comparator functions and apply them each in turn.
-Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
+<p><code>clj Sorting map by single key
+(sort-by :score results)
+</code>
+<code>clj
+({:name "Emma", :age 7, :score 7}
+ {:name "Jim", :age 15, :score 8}
+ {:name "Jane", :age 9, :score 8}
+ {:name "Fred", :age 10, :score 9}
+ {:name "Bill", :age 15, :score 9})
+</code>
+This is fine, although the scores are in lowest-first order. We can fix that by reversing the sequence:</p>
+
+<p><code>clj Reversing the order of results
+(reverse (sort-by :score results))
+</code>
+<code>clj
+({:name "Bill", :age 15, :score 9}
+ {:name "Fred", :age 10, :score 9}
+ {:name "Jane", :age 9, :score 8}
+ {:name "Jim", :age 15, :score 8}
+ {:name "Emma", :age 7, :score 7})
+</code>
+The headmistress is happy, although now she wants the results weighted by age so that of students with
+equal marks the younger will come above the older.</p>
+
+<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Shame. Instead, what we need is a new function that can take many comparator functions and apply them each in turn.
+Fortunately for us, this function already exists, namely &lsquo;juxt.</p>
 
 <p>Rewriting the function with juxt we now get:</p>
 
 <p>``` clj Sorting map by multiple keys
 (sort-by (juxt :score :age) [</p>
 
-<pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
-         {:name "Jim"  :age 15 :score 7 :tuition true}
-         {:name "Jane" :age 9 :score 8  :tuition false}])
+<pre><code>         {:name "Fred" :age 10 :score 9}
+         {:name "Jim"  :age 15 :score 8}
+         {:name "Bill" :age 15 :score 9}
+         {:name "Emma" :age 7  :score 7}
+         {:name "Jane" :age 9  :score 8}])
 </code></pre>
 
 <p><code>
 </code> clj
-({:name &ldquo;Jim&rdquo;, :age 15, :score 7, :tuition true}
- {:name &ldquo;Jane&rdquo;, :age 9, :score 8, :tuition false}
- {:name &ldquo;Fred&rdquo;, :age 10, :score 9, :tuition true})
-```</p>
+({:name &ldquo;Emma&rdquo;, :age 7, :score 7}
+ {:name &ldquo;Jane&rdquo;, :age 9, :score 8}
+ {:name &ldquo;Jim&rdquo;, :age 15, :score 8}
+ {:name &ldquo;Fred&rdquo;, :age 10, :score 9}
+ {:name &ldquo;Bill&rdquo;, :age 15, :score 9})
+```
+Great! Although we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example.</p>
 
-<p>Great! But now what if we want to also rank by those students who take extra tuition? You&rsquo;d expect the
-following to work, but it orders the boolean false-true rather than true-false:</p>
+<p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface.</p>
 
-<p>``` clj Sorting map by multiple keys and boolean
-(sort-by (juxt :tuition :score :age) [</p>
+<p>We cannot overide the Integer compareTo function, so we have to find other creative ways, one of which is to change the value to a negative by wrapping the map &lsquo;get&rsquo; function in an anonymous function:</p>
 
-<pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
-         {:name "Jim"  :age 15 :score 7 :tuition true}
-         {:name "Jane" :age 9 :score 8  :tuition false}])
-</code></pre>
-
-<p>```</p>
+<p><code>clj Reversing the age order
+(sort-by (juxt #(* -1 (:score %)) :age) results)
+</code>
+This gives us exactly what we want:
+<code>clj
+({:name "Fred", :age 10, :score 9}
+ {:name "Bill", :age 15, :score 9}
+ {:name "Jane", :age 9, :score 8}
+ {:name "Jim", :age 15, :score 8}
+ {:name "Emma", :age 7, :score 7})
+</code>
+The Headmistress is very please as she can now process the hundreds of test results in no time at all.</p>
 ]]></content>
   </entry>
   

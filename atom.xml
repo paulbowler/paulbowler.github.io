@@ -4,7 +4,7 @@
   <title><![CDATA[Developers Blog]]></title>
   <link href="http://paulbowler.github.io/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T12:52:50+01:00</updated>
+  <updated>2013-10-24T13:36:31+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -18,33 +18,68 @@
     <link href="http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure/"/>
     <updated>2013-10-24T11:34:00+01:00</updated>
     <id>http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure</id>
-    <content type="html"><![CDATA[<p>As keywords are also Clojure functions, it is very simple to sort maps by a specific key:</p>
+    <content type="html"><![CDATA[<p>Five students have taken an exam and we want to sort their scores in order. Pretty simple ask.</p>
 
-<figure class='code'><figcaption><span>Sorting map by single key</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>Here are the students, their ages and score:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="ss">:score</span> <span class="p">[</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span> <span class="ss">:age</span> <span class="mi">10</span> <span class="ss">:score</span> <span class="mi">9</span> <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>  <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">7</span> <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:age</span> <span class="mi">9</span> <span class="ss">:score</span> <span class="mi">8</span>  <span class="ss">:tuition</span> <span class="nv">false</span><span class="p">}])</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">results</span> <span class="p">[{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span> <span class="ss">:age</span> <span class="mi">10</span> <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'>              <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>  <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'>              <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span> <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'>              <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Emma&quot;</span> <span class="ss">:age</span> <span class="mi">7</span>  <span class="ss">:score</span> <span class="mi">7</span><span class="p">}</span>
+</span><span class='line'>              <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:age</span> <span class="mi">9</span>  <span class="ss">:score</span> <span class="mi">8</span><span class="p">}])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As keywords are also Clojure functions, it is very simple to sort maps by a specific key:</p>
+
+<figure class='code'><figcaption><span>Sorting map by single key</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="ss">:score</span> <span class="nv">results</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">7</span><span class="p">}</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Emma&quot;</span>, <span class="ss">:age</span> <span class="mi">7</span>, <span class="ss">:score</span> <span class="mi">7</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
 </span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span>, <span class="ss">:age</span> <span class="mi">9</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
-</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">})</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>However, what if we want to sort a map by multiple keys, such as :age and then :score? We can&rsquo;t just
-add the second keyword to sort-by.</p>
+<p>This is fine, although the scores are in lowest-first order. We can fix that by reversing the sequence:</p>
 
-<p>What we need is a new function that can take many comparator functions and apply them each in turn.
-Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
+<figure class='code'><figcaption><span>Reversing the order of results</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">reverse </span><span class="p">(</span><span class="nb">sort-by </span><span class="ss">:score</span> <span class="nv">results</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span>, <span class="ss">:age</span> <span class="mi">9</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Emma&quot;</span>, <span class="ss">:age</span> <span class="mi">7</span>, <span class="ss">:score</span> <span class="mi">7</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The headmistress is happy, although now she wants the results weighted by age so that of students with
+equal marks the younger will come above the older.</p>
+
+<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Shame. Instead, what we need is a new function that can take many comparator functions and apply them each in turn.
+Fortunately for us, this function already exists, namely &lsquo;juxt.</p>
 
 <p>Rewriting the function with juxt we now get:</p>
 
@@ -52,35 +87,57 @@ Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="ss">:score</span> <span class="ss">:age</span><span class="p">)</span> <span class="p">[</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span> <span class="ss">:age</span> <span class="mi">10</span> <span class="ss">:score</span> <span class="mi">9</span> <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>  <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">7</span> <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:age</span> <span class="mi">9</span> <span class="ss">:score</span> <span class="mi">8</span>  <span class="ss">:tuition</span> <span class="nv">false</span><span class="p">}])</span>
+</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span> <span class="ss">:age</span> <span class="mi">10</span> <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>  <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span> <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Emma&quot;</span> <span class="ss">:age</span> <span class="mi">7</span>  <span class="ss">:score</span> <span class="mi">7</span><span class="p">}</span>
+</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:age</span> <span class="mi">9</span>  <span class="ss">:score</span> <span class="mi">8</span><span class="p">}])</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">7</span>, <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
-</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span>, <span class="ss">:age</span> <span class="mi">9</span>, <span class="ss">:score</span> <span class="mi">8</span>, <span class="ss">:tuition</span> <span class="nv">false</span><span class="p">}</span>
-</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span>, <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">})</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Emma&quot;</span>, <span class="ss">:age</span> <span class="mi">7</span>, <span class="ss">:score</span> <span class="mi">7</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span>, <span class="ss">:age</span> <span class="mi">9</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Great! But now what if we want to also rank by those students who take extra tuition? You&rsquo;d expect the
-following to work, but it orders the boolean false-true rather than true-false:</p>
+<p>Great! Although we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example.</p>
 
-<figure class='code'><figcaption><span>Sorting map by multiple keys and boolean</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface.</p>
+
+<p>We cannot overide the Integer compareTo function, so we have to find other creative ways, one of which is to change the value to a negative by wrapping the map &lsquo;get&rsquo; function in an anonymous function:</p>
+
+<figure class='code'><figcaption><span>Reversing the age order</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="o">#</span><span class="p">(</span><span class="nb">* </span><span class="mi">-1</span> <span class="p">(</span><span class="ss">:score</span> <span class="nv">%</span><span class="p">))</span> <span class="ss">:age</span><span class="p">)</span> <span class="nv">results</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This gives us exactly what we want:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="ss">:tuition</span> <span class="ss">:score</span> <span class="ss">:age</span><span class="p">)</span> <span class="p">[</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span> <span class="ss">:age</span> <span class="mi">10</span> <span class="ss">:score</span> <span class="mi">9</span> <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>  <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">7</span> <span class="ss">:tuition</span> <span class="nv">true</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:age</span> <span class="mi">9</span> <span class="ss">:score</span> <span class="mi">8</span>  <span class="ss">:tuition</span> <span class="nv">false</span><span class="p">}])</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">({</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span>, <span class="ss">:age</span> <span class="mi">10</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span>, <span class="ss">:age</span> <span class="mi">9</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>, <span class="ss">:age</span> <span class="mi">15</span>, <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
+</span><span class='line'> <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Emma&quot;</span>, <span class="ss">:age</span> <span class="mi">7</span>, <span class="ss">:score</span> <span class="mi">7</span><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>The Headmistress is very please as she can now process the hundreds of test results in no time at all.</p>
 ]]></content>
   </entry>
   
