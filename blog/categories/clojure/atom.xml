@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | Developers Blog]]></title>
   <link href="http://paulbowler.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T13:45:12+01:00</updated>
+  <updated>2013-10-24T13:50:26+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -85,9 +85,9 @@ Great! Although we now have both age and score going from lowest to highest. We 
 
 <p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface through a &lsquo;compareTo&rsquo; method.</p>
 
-<p>We cannot overide Integer&rsquo;s &lsquo;compareTo&rsquo; method, so we have to find other creative ways. One way is to change the age value to a negative by wrapping the map &lsquo;get&rsquo; function in an anonymous function. The ages will then be sorted as before, but effectively in reverse:</p>
+<p>We cannot overide Integer&rsquo;s &lsquo;compareTo&rsquo; method, so we have to find other creative ways. One way is to change the value to a negative by wrapping the map &lsquo;get&rsquo; function (which is effectively what the keyword does as a function) and performing the transformation there. The scores can then be sorted in the correct order as before:</p>
 
-<p><code>clj Reversing the age order
+<p><code>clj Reversing the score order
 (sort-by (juxt #(* -1 (:score %)) :age) results)
 </code>
 This gives us exactly what we want:

@@ -187,9 +187,9 @@ equal marks the younger will come above the older.</p>
 
 <p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface through a &lsquo;compareTo&rsquo; method.</p>
 
-<p>We cannot overide Integer&rsquo;s &lsquo;compareTo&rsquo; method, so we have to find other creative ways. One way is to change the age value to a negative by wrapping the map &lsquo;get&rsquo; function in an anonymous function. The ages will then be sorted as before, but effectively in reverse:</p>
+<p>We cannot overide Integer&rsquo;s &lsquo;compareTo&rsquo; method, so we have to find other creative ways. One way is to change the value to a negative by wrapping the map &lsquo;get&rsquo; function (which is effectively what the keyword does as a function) and performing the transformation there. The scores can then be sorted in the correct order as before:</p>
 
-<figure class='code'><figcaption><span>Reversing the age order</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Reversing the score order</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="o">#</span><span class="p">(</span><span class="nb">* </span><span class="mi">-1</span> <span class="p">(</span><span class="ss">:score</span> <span class="nv">%</span><span class="p">))</span> <span class="ss">:age</span><span class="p">)</span> <span class="nv">results</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
