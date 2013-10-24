@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Merging maps by key values in clojure - Functional Adventures</title>
+  <meta name="author" content="Paul Bowler">
+
+  
+  <meta name="description" content="A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Functional Adventures" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Functional Adventures</a></h1>
+  
+    <h2>Lessons in learning Clojure, ClojureScript and Datomic</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Merging Maps by Key Values in Clojure</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-25T15:43:00+01:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. The databases have a common key of :name, and are made up of:</p>
+
+<p>Class data:</p>
+
+<figure class='code'><figcaption><span>Class Data</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">class-data</span> <span class="p">[</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>,  <span class="ss">:class</span> <span class="ss">:twyford</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bob Smith&quot;</span>,  <span class="ss">:class</span> <span class="ss">:marwell</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim Brown&quot;</span>,  <span class="ss">:class</span> <span class="ss">:owslebury</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Kate Jones&quot;</span>, <span class="ss">:class</span> <span class="ss">:littleton</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:class</span> <span class="ss">:alresford</span><span class="p">}])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>House data:</p>
+
+<figure class='code'><figcaption><span>House Data</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">house-data</span> <span class="p">[</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>,  <span class="ss">:house</span> <span class="ss">:byron</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bob Smith&quot;</span>,  <span class="ss">:house</span> <span class="ss">:shelley</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim Brown&quot;</span>,  <span class="ss">:house</span> <span class="ss">:auden</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Kate Jones&quot;</span>, <span class="ss">:house</span> <span class="ss">:byron</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:house</span> <span class="ss">:blake</span><span class="p">}])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip;and school meal data:</p>
+
+<figure class='code'><figcaption><span>School Meal Data</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">meal-data</span> <span class="p">[</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>,  <span class="ss">:meal</span> <span class="ss">:vegetarian</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bob Smith&quot;</span>,  <span class="ss">:meal</span> <span class="ss">:lunchbox</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim Brown&quot;</span>,  <span class="ss">:meal</span> <span class="ss">:hot</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Kate Jones&quot;</span>, <span class="ss">:meal</span> <span class="ss">:lunchbox</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:meal</span> <span class="ss">:hot</span><span class="p">}])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Combining maps using the &lsquo;merge&rsquo; function seems the obvious place to start, but this will only merge multiple maps, not
+sequences of maps. Breaking down what we need gives the following:</p>
+
+<pre><code>1 Find all the unique values in :name across the databases
+2 For each unique :name, get the maps with that name from each database
+3 Merge the maps into a new maps
+</code></pre>
+
+<p>To find the unique keys we can map the &lsquo;keys&rsquo; function across all database, then remove duplicates:</p>
+
+<figure class='code'><figcaption><span>Unique keys across databases</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">unique-key-values</span> <span class="p">[</span><span class="nb">key </span><span class="nv">colls</span><span class="p">]</span> <span class="p">(</span><span class="nb">distinct </span><span class="p">(</span><span class="nf">flatten</span> <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">map key </span><span class="nv">%</span><span class="p">)</span> <span class="nv">colls</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Calling:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nf">unique-key-values</span> <span class="ss">:name</span> <span class="p">[</span><span class="nv">class-data</span> <span class="nv">house-data</span> <span class="nv">meal-data</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>gives us:</p>
+
+<figure class='code'><figcaption><span>Unique key values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="s">&quot;Tom Thumb&quot;</span> <span class="s">&quot;Bob Smith&quot;</span> <span class="s">&quot;Jim Brown&quot;</span> <span class="s">&quot;Kate Jones&quot;</span> <span class="s">&quot;Helen Pain&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Paul Bowler</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-25T15:43:00+01:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/clojure/'>clojure</a>, <a class='category' href='/blog/categories/maps/'>maps</a>, <a class='category' href='/blog/categories/merge/'>merge</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure/" data-via="" data-counturl="http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure/" title="Previous Post: Sorting maps by multiple keys in Clojure">&laquo; Sorting maps by multiple keys in Clojure</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/25/merging-maps-by-key-values-in-clojure/">Merging Maps by Key Values in Clojure</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure/">Sorting Maps by Multiple Keys in Clojure</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Paul Bowler -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'functionaladventures';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure/';
+        var disqus_url = 'http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

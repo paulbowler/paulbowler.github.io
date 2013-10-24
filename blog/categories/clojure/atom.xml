@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T15:28:57+01:00</updated>
+  <updated>2013-10-24T18:11:54+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Merging maps by key values in clojure]]></title>
+    <link href="http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure/"/>
+    <updated>2013-10-25T15:43:00+01:00</updated>
+    <id>http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure</id>
+    <content type="html"><![CDATA[<p>A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. The databases have a common key of :name, and are made up of:</p>
+
+<p>Class data:
+``` clj Class Data
+(def class-data [</p>
+
+<pre><code>     {:name "Tom Thumb",  :class :twyford}
+     {:name "Bob Smith",  :class :marwell}
+     {:name "Jim Brown",  :class :owslebury}
+     {:name "Kate Jones", :class :littleton}
+     {:name "Helen Pain", :class :alresford}])
+</code></pre>
+
+<p>```</p>
+
+<p>House data:
+``` clj House Data
+(def house-data [</p>
+
+<pre><code>     {:name "Tom Thumb",  :house :byron}
+     {:name "Bob Smith",  :house :shelley}
+     {:name "Jim Brown",  :house :auden}
+     {:name "Kate Jones", :house :byron}
+     {:name "Helen Pain", :house :blake}])
+</code></pre>
+
+<p>```</p>
+
+<p>&hellip;and school meal data:</p>
+
+<p>``` clj School Meal Data
+(def meal-data [</p>
+
+<pre><code>     {:name "Tom Thumb",  :meal :vegetarian}
+     {:name "Bob Smith",  :meal :lunchbox}
+     {:name "Jim Brown",  :meal :hot}
+     {:name "Kate Jones", :meal :lunchbox}
+     {:name "Helen Pain", :meal :hot}])
+</code></pre>
+
+<p>```</p>
+
+<p>Combining maps using the &lsquo;merge&rsquo; function seems the obvious place to start, but this will only merge multiple maps, not
+sequences of maps. Breaking down what we need gives the following:</p>
+
+<pre><code>1 Find all the unique values in :name across the databases
+2 For each unique :name, get the maps with that name from each database
+3 Merge the maps into a new maps
+</code></pre>
+
+<p>To find the unique keys we can map the &lsquo;keys&rsquo; function across all database, then remove duplicates:</p>
+
+<p><code>clj Unique keys across databases
+(defn unique-key-values [key colls] (distinct (flatten (map #(map key %) colls))))
+</code></p>
+
+<p>Calling:
+<code>clj
+(unique-key-values :name [class-data house-data meal-data])
+</code>
+gives us:
+<code>clj Unique key values
+("Tom Thumb" "Bob Smith" "Jim Brown" "Kate Jones" "Helen Pain")
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sorting maps by multiple keys in Clojure]]></title>

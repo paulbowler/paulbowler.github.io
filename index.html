@@ -9,7 +9,7 @@
   <meta name="author" content="Paul Bowler">
 
   
-  <meta name="description" content="Several hundred school students have taken an exam and the Headmistress wants a list of results ordered by score. Pretty simple ask. Here is a &hellip;">
+  <meta name="description" content="A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -58,6 +58,122 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/25/merging-maps-by-key-values-in-clojure/">Merging Maps by Key Values in Clojure</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-25T15:43:00+01:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. The databases have a common key of :name, and are made up of:</p>
+
+<p>Class data:</p>
+
+<figure class='code'><figcaption><span>Class Data</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">class-data</span> <span class="p">[</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>,  <span class="ss">:class</span> <span class="ss">:twyford</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bob Smith&quot;</span>,  <span class="ss">:class</span> <span class="ss">:marwell</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim Brown&quot;</span>,  <span class="ss">:class</span> <span class="ss">:owslebury</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Kate Jones&quot;</span>, <span class="ss">:class</span> <span class="ss">:littleton</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:class</span> <span class="ss">:alresford</span><span class="p">}])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>House data:</p>
+
+<figure class='code'><figcaption><span>House Data</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">house-data</span> <span class="p">[</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>,  <span class="ss">:house</span> <span class="ss">:byron</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bob Smith&quot;</span>,  <span class="ss">:house</span> <span class="ss">:shelley</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim Brown&quot;</span>,  <span class="ss">:house</span> <span class="ss">:auden</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Kate Jones&quot;</span>, <span class="ss">:house</span> <span class="ss">:byron</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:house</span> <span class="ss">:blake</span><span class="p">}])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip;and school meal data:</p>
+
+<figure class='code'><figcaption><span>School Meal Data</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="k">def </span><span class="nv">meal-data</span> <span class="p">[</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Tom Thumb&quot;</span>,  <span class="ss">:meal</span> <span class="ss">:vegetarian</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bob Smith&quot;</span>,  <span class="ss">:meal</span> <span class="ss">:lunchbox</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim Brown&quot;</span>,  <span class="ss">:meal</span> <span class="ss">:hot</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Kate Jones&quot;</span>, <span class="ss">:meal</span> <span class="ss">:lunchbox</span><span class="p">}</span>
+</span><span class='line'>         <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Helen Pain&quot;</span>, <span class="ss">:meal</span> <span class="ss">:hot</span><span class="p">}])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Combining maps using the &lsquo;merge&rsquo; function seems the obvious place to start, but this will only merge multiple maps, not
+sequences of maps. Breaking down what we need gives the following:</p>
+
+<pre><code>1 Find all the unique values in :name across the databases
+2 For each unique :name, get the maps with that name from each database
+3 Merge the maps into a new maps
+</code></pre>
+
+<p>To find the unique keys we can map the &lsquo;keys&rsquo; function across all database, then remove duplicates:</p>
+
+<figure class='code'><figcaption><span>Unique keys across databases</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">unique-key-values</span> <span class="p">[</span><span class="nb">key </span><span class="nv">colls</span><span class="p">]</span> <span class="p">(</span><span class="nb">distinct </span><span class="p">(</span><span class="nf">flatten</span> <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nb">map key </span><span class="nv">%</span><span class="p">)</span> <span class="nv">colls</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Calling:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nf">unique-key-values</span> <span class="ss">:name</span> <span class="p">[</span><span class="nv">class-data</span> <span class="nv">house-data</span> <span class="nv">meal-data</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>gives us:</p>
+
+<figure class='code'><figcaption><span>Unique key values</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="s">&quot;Tom Thumb&quot;</span> <span class="s">&quot;Bob Smith&quot;</span> <span class="s">&quot;Jim Brown&quot;</span> <span class="s">&quot;Kate Jones&quot;</span> <span class="s">&quot;Helen Pain&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -217,6 +333,10 @@ equal marks the younger will come above the older.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/25/merging-maps-by-key-values-in-clojure/">Merging Maps by Key Values in Clojure</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure/">Sorting Maps by Multiple Keys in Clojure</a>
