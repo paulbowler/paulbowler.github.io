@@ -9,11 +9,7 @@
   <meta name="author" content="Paul Bowler">
 
   
-  <meta name="description" content="Five students have taken an exam and we want to sort their scores in order. Pretty simple ask. Here are the students, their ages and score: 1
-2
-3
-4
-5 &hellip;">
+  <meta name="description" content="Several school students have taken an exam and the Headmistress wants a list ordered by score. Pretty simple ask. Here is a representative sample of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -95,9 +91,9 @@
   </header>
 
 
-<div class="entry-content"><p>Five students have taken an exam and we want to sort their scores in order. Pretty simple ask.</p>
+<div class="entry-content"><p>Several school students have taken an exam and the Headmistress  wants a list ordered by score. Pretty simple ask.</p>
 
-<p>Here are the students, their ages and score:</p>
+<p>Here is a representative sample of the students, their ages and score as a sequence of maps:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -152,13 +148,12 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The headmistress is happy, although now she wants the results weighted by age so that of students with
+<p>The headmistress is happy, although now she also wants the results weighted by age so that of students with
 equal marks the younger will come above the older.</p>
 
-<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Shame. Instead, what we need is a new function that can take many comparator functions and apply them each in turn.
-Fortunately for us, this function already exists, namely &lsquo;juxt.</p>
+<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Shame. Instead, what we need is a new function that can take many search functions and apply them each in turn.</p>
 
-<p>Rewriting the function with juxt we now get:</p>
+<p>Fortunately for us, this function already exists, namely &lsquo;juxt&rsquo;. Rewriting the function with juxt we now get:</p>
 
 <figure class='code'><figcaption><span>Sorting map by multiple keys</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -188,11 +183,11 @@ Fortunately for us, this function already exists, namely &lsquo;juxt.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Great! Although we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example.</p>
+<p>Great! Although we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example. Clearly this time we can&rsquo;t just reverse the resulting sequence as student&rsquo;s ages would then be in the wrong order. Hmmm&hellip;</p>
 
-<p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface.</p>
+<p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interface through a &lsquo;compareTo&rsquo; method.</p>
 
-<p>We cannot overide the Integer compareTo function, so we have to find other creative ways, one of which is to change the value to a negative by wrapping the map &lsquo;get&rsquo; function in an anonymous function:</p>
+<p>We cannot overide Integer&rsquo;s &lsquo;compareTo&rsquo; method, so we have to find other creative ways. One way is to change the age value to a negative by wrapping the map &lsquo;get&rsquo; function in an anonymous function. The ages will then be sorted as before, but effectively in reverse:</p>
 
 <figure class='code'><figcaption><span>Reversing the age order</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="o">#</span><span class="p">(</span><span class="nb">* </span><span class="mi">-1</span> <span class="p">(</span><span class="ss">:score</span> <span class="nv">%</span><span class="p">))</span> <span class="ss">:age</span><span class="p">)</span> <span class="nv">results</span><span class="p">)</span>
@@ -214,7 +209,7 @@ Fortunately for us, this function already exists, namely &lsquo;juxt.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The Headmistress is very please as she can now process the hundreds of test results in no time at all.</p>
+<p>The Headmistress is very please and she can now process the hundreds of test results in no time at all. Result!</p>
 </div>
 
 
