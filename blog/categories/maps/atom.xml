@@ -4,7 +4,7 @@
   <title><![CDATA[Category: maps | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/maps/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T14:25:16+01:00</updated>
+  <updated>2013-10-24T14:47:02+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -38,9 +38,9 @@
 (sort-by :score results)
 </code>
 <code>clj
-({:name "Emma", :age 7, :score 7}
- {:name "Jim", :age 15, :score 8}
- {:name "Jane", :age 9, :score 8}
+({:name "Emma", :age 7,  :score 7}
+ {:name "Jim",  :age 15, :score 8}
+ {:name "Jane", :age 9,  :score 8}
  {:name "Fred", :age 10, :score 9}
  {:name "Bill", :age 15, :score 9})
 </code>
@@ -52,9 +52,9 @@ This is fine, although the scores are in lowest-first order. We can fix that by 
 <code>clj
 ({:name "Bill", :age 15, :score 9}
  {:name "Fred", :age 10, :score 9}
- {:name "Jane", :age 9, :score 8}
- {:name "Jim", :age 15, :score 8}
- {:name "Emma", :age 7, :score 7})
+ {:name "Jane", :age 9,  :score 8}
+ {:name "Jim",  :age 15, :score 8}
+ {:name "Emma", :age 7,  :score 7})
 </code>
 The headmistress is happy, although now she also wants the results weighted by age so that of students with
 equal marks the younger will come above the older.</p>
@@ -77,9 +77,9 @@ equal marks the younger will come above the older.</p>
 
 <p><code>
 </code> clj
-({:name &ldquo;Emma&rdquo;, :age 7, :score 7}
- {:name &ldquo;Jane&rdquo;, :age 9, :score 8}
- {:name &ldquo;Jim&rdquo;, :age 15, :score 8}
+({:name &ldquo;Emma&rdquo;, :age 7,  :score 7}
+ {:name &ldquo;Jane&rdquo;, :age 9,  :score 8}
+ {:name &ldquo;Jim&rdquo;,  :age 15, :score 8}
  {:name &ldquo;Fred&rdquo;, :age 10, :score 9}
  {:name &ldquo;Bill&rdquo;, :age 15, :score 9})
 ```
@@ -96,9 +96,9 @@ This gives us exactly what we want:
 <code>clj
 ({:name "Fred", :age 10, :score 9}
  {:name "Bill", :age 15, :score 9}
- {:name "Jane", :age 9, :score 8}
- {:name "Jim", :age 15, :score 8}
- {:name "Emma", :age 7, :score 7})
+ {:name "Jane", :age 9,  :score 8}
+ {:name "Jim",  :age 15, :score 8}
+ {:name "Emma", :age 7,  :score 7})
 </code>
 The Headmistress is very please and she can now process the hundreds of test results in no time at all. Result!</p>
 ]]></content>
