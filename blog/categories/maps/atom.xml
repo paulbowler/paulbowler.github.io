@@ -4,7 +4,7 @@
   <title><![CDATA[Category: maps | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/maps/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T15:00:05+01:00</updated>
+  <updated>2013-10-24T15:28:57+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -65,24 +65,16 @@ equal marks the younger will come above the older.</p>
 
 <p>Adding in juxt to the code gives:</p>
 
-<p>``` clj Sorting map by multiple keys
-(sort-by (juxt :score :age) [</p>
-
-<pre><code>         {:name "Fred" :age 10 :score 9}
-         {:name "Jim"  :age 15 :score 8}
-         {:name "Bill" :age 15 :score 9}
-         {:name "Emma" :age 7  :score 7}
-         {:name "Jane" :age 9  :score 8}])
-</code></pre>
-
-<p><code>
-</code> clj
-({:name &ldquo;Emma&rdquo;, :age 7,  :score 7}
- {:name &ldquo;Jane&rdquo;, :age 9,  :score 8}
- {:name &ldquo;Jim&rdquo;,  :age 15, :score 8}
- {:name &ldquo;Fred&rdquo;, :age 10, :score 9}
- {:name &ldquo;Bill&rdquo;, :age 15, :score 9})
-```
+<p><code>clj Sorting map by multiple keys
+(sort-by (juxt :score :age) results)
+</code>
+<code>clj
+({:name "Emma", :age 7,  :score 7}
+ {:name "Jane", :age 9,  :score 8}
+ {:name "Jim",  :age 15, :score 8}
+ {:name "Fred", :age 10, :score 9}
+ {:name "Bill", :age 15, :score 9})
+</code>
 Unfortunately we now have both age and score going from lowest to highest. We need score ranking from highest to lowest again as we had in the previous example. To use the SQL example again, we need &lsquo;order by score <em>desc</em>, age&rsquo;. Clearly this time we can&rsquo;t just reverse the resulting sequence as student&rsquo;s ages would then be in the wrong order. Hmmm&hellip;</p>
 
 <p>Under the covers Clojure sorts integers using a comparison of two values. This returns -1 for &lsquo;a &lt; b&rsquo;, 0 for &lsquo;a = b&rsquo; or +1 for &lsquo;a > c&rsquo;. It can then use a sort algorithm to put them all in the correct place. The comparison function itself is written in the base class, in this instance &lsquo;Integer&rsquo; which implements the &lsquo;Comparable&rsquo; interfaces &lsquo;compareTo&rsquo; method.</p>

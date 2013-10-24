@@ -4,7 +4,7 @@
   <title><![CDATA[Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T15:00:05+01:00</updated>
+  <updated>2013-10-24T15:28:57+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -86,17 +86,7 @@ equal marks the younger will come above the older.</p>
 <p>Adding in juxt to the code gives:</p>
 
 <figure class='code'><figcaption><span>Sorting map by multiple keys</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="ss">:score</span> <span class="ss">:age</span><span class="p">)</span> <span class="p">[</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Fred&quot;</span> <span class="ss">:age</span> <span class="mi">10</span> <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jim&quot;</span>  <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">8</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Bill&quot;</span> <span class="ss">:age</span> <span class="mi">15</span> <span class="ss">:score</span> <span class="mi">9</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Emma&quot;</span> <span class="ss">:age</span> <span class="mi">7</span>  <span class="ss">:score</span> <span class="mi">7</span><span class="p">}</span>
-</span><span class='line'>             <span class="p">{</span><span class="ss">:name</span> <span class="s">&quot;Jane&quot;</span> <span class="ss">:age</span> <span class="mi">9</span>  <span class="ss">:score</span> <span class="mi">8</span><span class="p">}])</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="p">(</span><span class="nf">juxt</span> <span class="ss">:score</span> <span class="ss">:age</span><span class="p">)</span> <span class="nv">results</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
