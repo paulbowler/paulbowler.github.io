@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: maps | Paul Bowler]]></title>
+  <title><![CDATA[Category: maps | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/maps/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T14:21:11+01:00</updated>
+  <updated>2013-10-24T14:23:06+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
