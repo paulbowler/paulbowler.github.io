@@ -4,7 +4,7 @@
   <title><![CDATA[Category: maps | Developers Blog]]></title>
   <link href="http://paulbowler.github.io/blog/categories/maps/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T12:38:41+01:00</updated>
+  <updated>2013-10-24T12:40:37+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -30,7 +30,9 @@
 
 <p><code>
 </code> clj
-({:name &ldquo;Jim&rdquo;, :age 15, :score 7} {:name &ldquo;Jane&rdquo;, :age 9, :score 8} {:name &ldquo;Fred&rdquo;, :age 10, :score 9})
+({:name &ldquo;Jim&rdquo;, :age 15, :score 7}
+ {:name &ldquo;Jane&rdquo;, :age 9, :score 8}
+ {:name &ldquo;Fred&rdquo;, :age 10, :score 9})
 ```</p>
 
 <p>However, what if we want to sort a map by multiple keys, such as :age and then :score? We can&rsquo;t just
@@ -51,7 +53,9 @@ Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
 
 <p><code>
 </code> clj
-({:name &ldquo;Jim&rdquo;, :age 15, :score 7, :tuition true} {:name &ldquo;Jane&rdquo;, :age 9, :score 8, :tuition false} {:name &ldquo;Fred&rdquo;, :age 10, :score 9, :tuition true})
+({:name &ldquo;Jim&rdquo;, :age 15, :score 7, :tuition true}
+ {:name &ldquo;Jane&rdquo;, :age 9, :score 8, :tuition false}
+ {:name &ldquo;Fred&rdquo;, :age 10, :score 9, :tuition true})
 ```</p>
 
 <p>Great! But now what if we want to also rank by those students who take extra tuition? You&rsquo;d expect the
