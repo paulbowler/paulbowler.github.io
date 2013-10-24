@@ -4,7 +4,7 @@
   <title><![CDATA[Category: merge | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/merge/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T19:06:55+01:00</updated>
+  <updated>2013-10-24T19:28:03+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -33,7 +33,7 @@
 
 <p>```</p>
 
-<p>House data:
+<p>&hellip;house data:
 ``` clj House Data
 (def house-data [</p>
 
@@ -60,11 +60,13 @@
 
 <p>```</p>
 
-<p>Combining maps using the &lsquo;merge&rsquo; function seems the obvious place to start, but this will only merge multiple maps, not
-sequences of maps. Breaking down what we need gives the following:</p>
+<p>Combining maps using the &lsquo;merge&rsquo; function seems the obvious place to start, but this will only merge sequences of maps, not
+sequences of sequences of maps.</p>
+
+<p>Using a bit of hammock-driven thinking time and functinal decomposition, we can break a possible solution down to:</p>
 
 <pre><code>1 Find all the unique values in :name across the databases
-2 For each unique :name, get the maps with that name from each database
+2 For each unique :name, get the maps containing that key/value from each database
 3 Merge the maps into a new maps
 </code></pre>
 
@@ -74,7 +76,7 @@ sequences of maps. Breaking down what we need gives the following:</p>
 (defn unique-key-values [key colls] (distinct (flatten (map #(map key %) colls))))
 </code></p>
 
-<p>Calling:
+<p>Calling this:
 <code>clj
 (unique-key-values :name [class-data house-data meal-data])
 </code>
