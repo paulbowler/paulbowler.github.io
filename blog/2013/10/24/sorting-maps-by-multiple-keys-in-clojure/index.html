@@ -151,7 +151,7 @@
 <p>The headmistress is happy, although now she also wants the results weighted by age so that of students with
 equal marks the younger will come above the older.</p>
 
-<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is to be able to apply each sort in turn and fortunately &lsquo;juxt&rsquo; does exactly what we need:</p>
+<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by score desc, age asc&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is to be able to apply each sort in turn and fortunately &lsquo;juxt&rsquo; does exactly what we need:</p>
 
 <figure class='code'><figcaption><span>Sorting map by multiple keys</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

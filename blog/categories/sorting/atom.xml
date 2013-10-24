@@ -4,7 +4,7 @@
   <title><![CDATA[Category: sorting | Developers Blog]]></title>
   <link href="http://paulbowler.github.io/blog/categories/sorting/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T13:58:40+01:00</updated>
+  <updated>2013-10-24T14:00:50+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -59,7 +59,7 @@ This is fine, although the scores are in lowest-first order. We can fix that by 
 The headmistress is happy, although now she also wants the results weighted by age so that of students with
 equal marks the younger will come above the older.</p>
 
-<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by x, y&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is to be able to apply each sort in turn and fortunately &lsquo;juxt&rsquo; does exactly what we need:</p>
+<p>To do this we need to be able to sort by multiple keys such as you would in a relational database using &lsquo;order by score desc, age asc&rsquo;. In clojure we can&rsquo;t just do this by adding the second keyword to sort-by. Instead, what we need is to be able to apply each sort in turn and fortunately &lsquo;juxt&rsquo; does exactly what we need:</p>
 
 <p>``` clj Sorting map by multiple keys
 (sort-by (juxt :score :age) [</p>
