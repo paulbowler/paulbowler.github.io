@@ -4,7 +4,7 @@
   <title><![CDATA[Category: maps | Developers Blog]]></title>
   <link href="http://paulbowler.github.io/blog/categories/maps/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T12:41:39+01:00</updated>
+  <updated>2013-10-24T12:45:37+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -20,7 +20,7 @@
     <id>http://paulbowler.github.io/blog/2013/10/24/sorting-maps-by-multiple-keys-in-clojure</id>
     <content type="html"><![CDATA[<p>As keywords are also Clojure functions, it is very simple to sort maps by a specific key:</p>
 
-<p>``` clj Sorting map by single key
+<p>``` clj Sorting map by single key mark:6-8
 (sort-by :score [</p>
 
 <pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
@@ -28,9 +28,7 @@
          {:name "Jane" :age 9 :score 8  :tuition false}])
 </code></pre>
 
-<p><code>
-</code> clj
-({:name &ldquo;Jim&rdquo;, :age 15, :score 7}
+<p>({:name &ldquo;Jim&rdquo;, :age 15, :score 7}
  {:name &ldquo;Jane&rdquo;, :age 9, :score 8}
  {:name &ldquo;Fred&rdquo;, :age 10, :score 9})
 ```</p>
@@ -43,7 +41,7 @@ Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
 
 <p>Rewriting the function with juxt we now get:</p>
 
-<p>``` clj Sorting map by multiple keys
+<p>``` clj Sorting map by multiple keys mark:6-9
 (sort-by (juxt :score :age) [</p>
 
 <pre><code>         {:name "Fred" :age 10 :score 9 :tuition true}
@@ -51,9 +49,7 @@ Fortunately for us, a function already exists, namely &lsquo;juxt.</p>
          {:name "Jane" :age 9 :score 8  :tuition false}])
 </code></pre>
 
-<p><code>
-</code> clj
-({:name &ldquo;Jim&rdquo;, :age 15, :score 7, :tuition true}
+<p>({:name &ldquo;Jim&rdquo;, :age 15, :score 7, :tuition true}
  {:name &ldquo;Jane&rdquo;, :age 9, :score 8, :tuition false}
  {:name &ldquo;Fred&rdquo;, :age 10, :score 9, :tuition true})
 ```</p>
