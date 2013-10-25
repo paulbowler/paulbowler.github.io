@@ -4,7 +4,7 @@
   <title><![CDATA[Category: merge | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/merge/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-24T19:44:17+01:00</updated>
+  <updated>2013-10-25T10:00:34+01:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -18,7 +18,7 @@
     <link href="http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure/"/>
     <updated>2013-10-25T15:43:00+01:00</updated>
     <id>http://paulbowler.github.io/blog/2013/10/25/merging-maps-by-key-values-in-clojure</id>
-    <content type="html"><![CDATA[<p>A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. The databases have a common key of :name, and are made up of:</p>
+    <content type="html"><![CDATA[<p>A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. The databases have a common key of student :name, and are:</p>
 
 <p>Class data:
 ``` clj Class Data
@@ -60,17 +60,19 @@
 
 <p>```</p>
 
-<p>Combining maps using the &lsquo;merge&rsquo; function seems the obvious place to start, but this will only merge sequences of maps, not
-sequences of sequences of maps.</p>
+<p>Combining maps using the &lsquo;merge&rsquo; function seems the obvious place to start, but this will only merge a sequence of maps, not
+sequences of sequences of maps as we have here.</p>
 
-<p>Using a bit of hammock-driven thinking time and functinal decomposition, we can break a possible solution down to:</p>
+<p>Using a bit of hammock-driven thinking time and functional decomposition, we can break a possible solution down to:</p>
 
 <pre><code>1 Find all the unique values in :name across the databases
 2 For each unique :name, get the maps containing that key/value pair from each database
 3 Merge the maps into new maps
 </code></pre>
 
-<p>To find the unique key values we can map the :key across all databases, then remove duplicates:</p>
+<p>  4 Combine into a single sequence</p>
+
+<p>To find the unique key values we can map the required :key across all databases, then remove duplicates:</p>
 
 <p><code>clj Unique key-values across databases
 (defn unique-key-values [key colls] (distinct (flatten (map #(map key %) colls))))
