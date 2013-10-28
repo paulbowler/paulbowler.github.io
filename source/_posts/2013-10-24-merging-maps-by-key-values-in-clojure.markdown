@@ -6,7 +6,7 @@ comments: true
 categories: [clojure, maps, merge]
 ---
 
-A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. The databases have a common key of :name, and are made up of:
+A school has data about its students split in different database and needs to combine them into one to supply an important report to the governors. The databases have a common key of student :name, and are:
 
 Class data:
 ``` clj Class Data
@@ -39,16 +39,17 @@ Class data:
          {:name "Helen Pain", :meal :hot}])
 ```
 
-Combining maps using the 'merge' function seems the obvious place to start, but this will only merge sequences of maps, not
-sequences of sequences of maps.
+Combining maps using the 'merge' function seems the obvious place to start, but this will only merge a sequence of maps, not
+sequences of sequences of maps as we have here.
 
-Using a bit of hammock-driven thinking time and functinal decomposition, we can break a possible solution down to:
+Using a bit of hammock-driven thinking time and functional decomposition, we can break a possible solution down to:
 
 	1 Find all the unique values in :name across the databases
 	2 For each unique :name, get the maps containing that key/value pair from each database
 	3 Merge the maps into new maps
+	4 Combine into a single sequence
 
-To find the unique key values we can map the :key across all databases, then remove duplicates:
+To find the unique key values we can map the required :key across all databases, then remove duplicates:
 
 ``` clj Unique key-values across databases
 (defn unique-key-values [key colls] (distinct (flatten (map #(map key %) colls))))
