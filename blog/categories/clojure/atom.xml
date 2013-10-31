@@ -4,7 +4,7 @@
   <title><![CDATA[Category: clojure | Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/blog/categories/clojure/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-25T10:27:34+01:00</updated>
+  <updated>2013-10-31T14:49:39+00:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -149,6 +149,10 @@ This is fine, although the scores are in lowest-first order. We can fix that by 
 
 <p><code>clj Reversing the order of results
 (reverse (sort-by :score results))
+</code>
+&hellip; or adding a second function to &lsquo;sort-by&rsquo;:
+<code>clj Specifying the order of results
+(sort-by :score &gt; results)
 </code>
 <code>clj
 ({:name "Bill", :age 15, :score 9}

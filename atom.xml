@@ -4,7 +4,7 @@
   <title><![CDATA[Functional Adventures]]></title>
   <link href="http://paulbowler.github.io/atom.xml" rel="self"/>
   <link href="http://paulbowler.github.io/"/>
-  <updated>2013-10-25T10:27:34+01:00</updated>
+  <updated>2013-10-31T14:49:39+00:00</updated>
   <id>http://paulbowler.github.io/</id>
   <author>
     <name><![CDATA[Paul Bowler]]></name>
@@ -198,6 +198,13 @@ sequences of sequences of maps as we have here.</p>
 
 <figure class='code'><figcaption><span>Reversing the order of results</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">reverse </span><span class="p">(</span><span class="nb">sort-by </span><span class="ss">:score</span> <span class="nv">results</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&hellip; or adding a second function to &lsquo;sort-by&rsquo;:</p>
+
+<figure class='code'><figcaption><span>Specifying the order of results</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='clj'><span class='line'><span class="p">(</span><span class="nb">sort-by </span><span class="ss">:score</span> <span class="nb">&gt; </span><span class="nv">results</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
