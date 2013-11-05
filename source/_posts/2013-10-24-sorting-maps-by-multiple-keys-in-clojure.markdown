@@ -33,6 +33,10 @@ This is fine, although the scores are in lowest-first order. We can fix that by 
 ``` clj Reversing the order of results
 (reverse (sort-by :score results))
 ```
+... or adding a second parameter to 'sort-by':
+``` clj Specifying the order of results
+(sort-by :score > results)
+```
 ``` clj
 ({:name "Bill", :age 15, :score 9}
  {:name "Fred", :age 10, :score 9}
